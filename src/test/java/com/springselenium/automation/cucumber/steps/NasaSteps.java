@@ -23,7 +23,7 @@ public class NasaSteps {
         nasaPage.search(keyword);
         nasaPage.clickSearch();
     }
-    @And("apply a filter by content type")
+    @And("apply a filter by Articles content type")
     public void and_ApplyAFilterByContentType() throws InterruptedException {
         // Write code here that turns the phrase above into concrete actions
         nasaResultsPage.filterByContentType();
@@ -35,5 +35,10 @@ public class NasaSteps {
         String expectedResultTitle = "Search Results for: Mars Rover";
         String actualResultTitle = nasaResultsPage.getResultsTitle();
         Assert.assertEquals(expectedResultTitle,actualResultTitle);
+
+        String expectedContentType = "Articles";
+        String actualContentType = nasaResultsPage.getContentType();
+        Assert.assertEquals(expectedContentType,actualContentType);
+
     }
 }

@@ -22,6 +22,8 @@ public class NasaResultsPage extends AbstractPage {
     //private final By applyFiltersBtn = By.cssSelector(".usa-button.hds-button.filter");
     private final By pageTitle = By.className("page-title");
 
+    private final By contentType = By.xpath("//button[@class='content_typearticles dynamic-chip']/span[@class='filter-label']");
+
     public boolean isAt() {
         return wait.until((d) -> driver.findElement(nasa_header).isDisplayed());
     }
@@ -41,5 +43,9 @@ public class NasaResultsPage extends AbstractPage {
 
     public String getResultsTitle(){
         return driver.findElement(pageTitle).getText();
+    }
+
+    public String getContentType(){
+        return driver.findElement(contentType).getText();
     }
 }
