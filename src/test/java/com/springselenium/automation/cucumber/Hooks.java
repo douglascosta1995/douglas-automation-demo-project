@@ -10,9 +10,4 @@ public class Hooks {
 
     @Autowired
     protected WebDriver driver;
-
-    //@After
-    //public void afterScenario() {
-    //    driver.quit();
-    //}
 }

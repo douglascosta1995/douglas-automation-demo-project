@@ -1,5 +1,6 @@
 package com.springselenium.automation.pages.nasa;
 
+import com.springselenium.automation.annotation.LazyComponent;
 import com.springselenium.automation.pages.AbstractPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-@Component
+@LazyComponent
 public class NasaResultsPage extends AbstractPage {
 
     private final By nasa_header = By.id("header-logo");

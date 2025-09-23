@@ -1,6 +1,7 @@
 package com.springselenium.automation.cucumber.steps;
 import com.springselenium.automation.pages.nasa.NasaPage;
 import com.springselenium.automation.pages.nasa.NasaResultsPage;
+import com.springselenium.automation.pages.nasa.NasaTechnologyPage;
 import io.cucumber.java.en.*;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ public class NasaSteps {
 
     @Autowired
     NasaResultsPage nasaResultsPage;
+
+    @Autowired
+    NasaTechnologyPage nasaTechnologyPage;
 
     @Given("I am on the Nasa homepage")
     public void given_IAmOnTheNasaHomepage() {
@@ -43,23 +47,23 @@ public class NasaSteps {
     }
 
     @When("I click Explore")
-    public void i_click_explore() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void when_IClickExplore() {
+        nasaPage.clickExplore();
     }
     @And("Click Technology")
-    public void click_technology() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void and_ClickTechnology() {
+        nasaPage.clickTechnology();
     }
     @Then("The technology page loads with the correct header")
-    public void the_technology_page_loads_with_the_correct_header() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void then_TheTechnologyPageLoadsWithTheCorrectHeader() throws InterruptedException {
+        Thread.sleep(2000);
+        String expected_pageTile = "Technology - NASA";
+        String actual_pageTitle = nasaTechnologyPage.getPageTitle();
+        Assert.assertEquals(expected_pageTile,actual_pageTitle);
     }
     @And("at least one article visible")
-    public void at_least_one_article_visible() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void and_AtLeastOneArticleVisible() {
+        int number_articles = nasaTechnologyPage.getArticleNumber();
+        Assert.assertTrue(number_articles>0);
     }
 }

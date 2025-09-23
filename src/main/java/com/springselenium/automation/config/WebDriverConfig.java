@@ -21,10 +21,9 @@ public class WebDriverConfig {
 	
 	@Value("${default.timeout:30}")
 	private int timeout;
-	
-	@Bean(destroyMethod = "quit")
+
+    @Bean
     @Primary
-    @Scope("cucumber-glue")
 	public WebDriver chromeDriver() {
 		Map<String, Object> chromePrefs = new HashMap<>();
 		ChromeOptions chromeOptions = new ChromeOptions();
