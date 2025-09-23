@@ -41,4 +41,25 @@ public class NasaSteps {
         Assert.assertEquals(expectedContentType,actualContentType);
 
     }
+
+    @When("I click Explore")
+    public void i_click_explore() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
+    @And("Click Technology")
+    public void click_technology() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
+    @Then("The technology page loads with the correct header")
+    public void the_technology_page_loads_with_the_correct_header() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
+    @And("at least one article visible")
+    public void at_least_one_article_visible() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
 }
