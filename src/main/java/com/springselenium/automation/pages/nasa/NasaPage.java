@@ -8,8 +8,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.stereotype.Component;
-
 import java.time.Duration;
 import java.util.List;
 
@@ -49,22 +47,18 @@ public class NasaPage extends AbstractPage {
     }
 
     public void search(String search) {
-
         driver.findElement(searchBox).sendKeys(search);
     }
 
     public void clickSearch() {
-
         driver.findElement(searchBox).sendKeys(Keys.ENTER);
     }
 
     public void clickExplore() {
-
         driver.findElement(button_explore).click();
     }
 
     public void clickTechnology() {
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(button_link_technology));
         driver.findElement(button_link_technology).click();
@@ -92,8 +86,6 @@ public class NasaPage extends AbstractPage {
         List<WebElement> list_links = driver.findElements(multimedia_links);
 
         for(int i = 1; i < list_links.size()+1; i++ ) {
-            //WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            //wait.until(ExpectedConditions.elementToBeClickable(link));
             String byString = multimedia_links.toString();
             String old_xpath = byString.substring(byString.indexOf(":") + 1).trim();
             String new_xpath = "("+old_xpath+")[" + i+"]";
@@ -104,7 +96,7 @@ public class NasaPage extends AbstractPage {
         }
     }
 
-    public void clickLinkAndReturn(By link) throws InterruptedException {
+    public void clickLinkAndReturn(By link) {
         driver.findElement(link).click();
         String pageSource = driver.getPageSource();
         assert pageSource != null;
@@ -112,11 +104,8 @@ public class NasaPage extends AbstractPage {
             System.out.println("An error occurred.");
             errorLoadingPage = true;
         };
-        //Thread.sleep(5000);
         goTo();
-        //Thread.sleep(5000);
         clickMultimedia();
-        //Thread.sleep(5000);
     }
 
     public boolean validateAnyErrorPageLoad(){

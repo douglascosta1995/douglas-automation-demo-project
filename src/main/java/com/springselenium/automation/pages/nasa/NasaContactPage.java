@@ -25,5 +25,4 @@ public class NasaContactPage extends AbstractPage {
         button.click();
         Thread.sleep(5000);
     }
-
 }

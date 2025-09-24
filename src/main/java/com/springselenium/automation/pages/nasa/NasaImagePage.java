@@ -5,7 +5,6 @@ import com.springselenium.automation.pages.AbstractPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-
 import java.util.List;
 import java.util.Random;
 
@@ -24,7 +23,6 @@ public class NasaImagePage extends AbstractPage {
     }
 
     public void click_image() throws InterruptedException {
-
         List<WebElement> list_images = driver.findElements(images);
 
         Random random = new Random();
@@ -43,7 +41,6 @@ public class NasaImagePage extends AbstractPage {
     }
 
     public String getImageAltText(){
-        System.out.println(driver.findElement(open_image).getAttribute("alt"));
         return driver.findElement(open_image).getAttribute("alt");
     }
 }
