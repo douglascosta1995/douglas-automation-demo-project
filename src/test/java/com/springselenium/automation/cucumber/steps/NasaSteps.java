@@ -1,8 +1,5 @@
 package com.springselenium.automation.cucumber.steps;
-import com.springselenium.automation.pages.nasa.NasaImagePage;
-import com.springselenium.automation.pages.nasa.NasaPage;
-import com.springselenium.automation.pages.nasa.NasaResultsPage;
-import com.springselenium.automation.pages.nasa.NasaTechnologyPage;
+import com.springselenium.automation.pages.nasa.*;
 import io.cucumber.java.en.*;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +16,12 @@ public class NasaSteps {
 
     @Autowired
     NasaImagePage nasaImagePage;
+
+    @Autowired
+    NasaContactPage nasaContactPage;
+
+    @Autowired
+    NasaSubmitQuestionPage nasaSubmitQuestionPage;
 
     @Given("I am on the Nasa homepage")
     public void given_IAmOnTheNasaHomepage() {
@@ -80,7 +83,6 @@ public class NasaSteps {
 
     @And("Click Image of the Day")
     public void and_ClickImageOfTheDay() {
-        // Write code here that turns the phrase above into concrete actions
         nasaPage.clickImageOfDay();
     }
 
@@ -91,7 +93,26 @@ public class NasaSteps {
 
     @Then("The image or video opens correctly")
     public void then_TheImageVideoOpensCorrectly() {
-        // Write code here that turns the phrase above into concrete actions
         Assert.assertNotNull(nasaImagePage.getImageAltText());
+    }
+
+    @When("I navigate to the Nasa Contact Form")
+    public void when_INavigateToTheNasaContactForm() throws InterruptedException {
+        nasaPage.clickContactNasa();
+        nasaContactPage.clickContactNasa();
+    }
+    @And("I fill in some fields with the following test data {string} {string} {string} {string}")
+    public void and_IFillInSomeFieldsWithTheFollowingTestData(String fname, String lname, String email, String comment) {
+        nasaSubmitQuestionPage.fillOutFormData(fname, lname, email, comment);
+    }
+    @And("I click Submit")
+    public void and_IClickSubmit() throws InterruptedException {
+        nasaSubmitQuestionPage.clickSubmit();
+    }
+    @Then("The form is submitted successfully")
+    public void then_theFormIsSubmittedSuccessfully() {
+        String expected_message = "Thanks for contacting us! We will get in touch with you shortly.";
+        String actual_message = nasaSubmitQuestionPage.confirmationMessage();
+        Assert.assertEquals(expected_message,actual_message);
     }
 }

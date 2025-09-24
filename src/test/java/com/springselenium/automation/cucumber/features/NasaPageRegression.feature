@@ -20,3 +20,9 @@ Feature: As a user, I want to explore the Nasa Page and have all of its function
     And Click on a random featured image or video
     Then The image or video opens correctly
 
+   Scenario: Validate that the user can submit a question for NASA via a form
+     Given I am on the Nasa homepage
+     When I navigate to the Nasa Contact Form
+     And I fill in some fields with the following test data "John" "Doe" "john.does@test.com" "Please do not reply, this is only a test."
+     And I click Submit
+     Then The form is submitted successfully
