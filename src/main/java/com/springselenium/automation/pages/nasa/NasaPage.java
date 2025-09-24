@@ -22,8 +22,12 @@ public class NasaPage extends AbstractPage {
     private final By button_explore = By.id("global-navigation-trigger");
 
     private final By button_link_technology = By.xpath("//li[@submenu-id='global-nav-technology']//span[text()='Technology']");
+
     private final By button_link_technology_submenu = By.xpath("//div[@submenu-id='global-nav-technology']//*[text()='Technology']");
 
+    private final By button_multimedia = By.xpath("//button[./span[text()='Multimedia']]");
+
+    private final By button_image_of_day_submenu = By.xpath("//ul[@id='news-galleries-submenu']//*[text()='Image of the Day']");
 
     @Override
     public boolean isAt() {
@@ -56,6 +60,14 @@ public class NasaPage extends AbstractPage {
         driver.findElement(button_link_technology).click();
         wait.until(ExpectedConditions.elementToBeClickable(button_link_technology_submenu));
         driver.findElement(button_link_technology_submenu).click();
+    }
+
+    public void clickMultimedia(){
+        driver.findElement(button_multimedia).click();
+    }
+
+    public void clickImageOfDay(){
+        driver.findElement(button_image_of_day_submenu).click();
     }
 
 }

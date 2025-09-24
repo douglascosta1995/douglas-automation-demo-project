@@ -1,4 +1,5 @@
 package com.springselenium.automation.cucumber.steps;
+import com.springselenium.automation.pages.nasa.NasaImagePage;
 import com.springselenium.automation.pages.nasa.NasaPage;
 import com.springselenium.automation.pages.nasa.NasaResultsPage;
 import com.springselenium.automation.pages.nasa.NasaTechnologyPage;
@@ -15,6 +16,9 @@ public class NasaSteps {
 
     @Autowired
     NasaTechnologyPage nasaTechnologyPage;
+
+    @Autowired
+    NasaImagePage nasaImagePage;
 
     @Given("I am on the Nasa homepage")
     public void given_IAmOnTheNasaHomepage() {
@@ -50,10 +54,12 @@ public class NasaSteps {
     public void when_IClickExplore() {
         nasaPage.clickExplore();
     }
+
     @And("Click Technology")
     public void and_ClickTechnology() {
         nasaPage.clickTechnology();
     }
+
     @Then("The technology page loads with the correct header")
     public void then_TheTechnologyPageLoadsWithTheCorrectHeader() throws InterruptedException {
         Thread.sleep(2000);
@@ -65,5 +71,27 @@ public class NasaSteps {
     public void and_AtLeastOneArticleVisible() {
         int number_articles = nasaTechnologyPage.getArticleNumber();
         Assert.assertTrue(number_articles>0);
+    }
+
+    @When("I click Multimedia")
+    public void when_IClickMultimedia() {
+        nasaPage.clickMultimedia();
+    }
+
+    @And("Click Image of the Day")
+    public void and_ClickImageOfTheDay() {
+        // Write code here that turns the phrase above into concrete actions
+        nasaPage.clickImageOfDay();
+    }
+
+    @And("Click on a random featured image or video")
+    public void and_ClickOnARandomFeaturedImageOrVideo() throws InterruptedException {
+        nasaImagePage.click_image();
+    }
+
+    @Then("The image or video opens correctly")
+    public void then_TheImageVideoOpensCorrectly() {
+        // Write code here that turns the phrase above into concrete actions
+        Assert.assertNotNull(nasaImagePage.getImageAltText());
     }
 }

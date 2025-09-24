@@ -12,3 +12,11 @@ Feature: As a user, I want to explore the Nasa Page and have all of its function
     And Click Technology
     Then The technology page loads with the correct header
     And at least one article visible
+
+  Scenario: Validate that External Link / Multimedia Content is working
+    Given I am on the Nasa homepage
+    When I click Multimedia
+    And Click Image of the Day
+    And Click on a random featured image or video
+    Then The image or video opens correctly
+
