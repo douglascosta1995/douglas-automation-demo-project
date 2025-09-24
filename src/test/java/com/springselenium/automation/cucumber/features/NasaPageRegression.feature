@@ -26,3 +26,8 @@ Feature: As a user, I want to explore the Nasa Page and have all of its function
      And I fill in some fields with the following test data "John" "Doe" "john.does@test.com" "Please do not reply, this is only a test."
      And I click Submit
      Then The form is submitted successfully
+
+   Scenario: Validate that Internal Links load without errors
+     Given I am on the Nasa homepage
+     When Click each of the Multimedia submenu links
+     Then Each page will load without errors

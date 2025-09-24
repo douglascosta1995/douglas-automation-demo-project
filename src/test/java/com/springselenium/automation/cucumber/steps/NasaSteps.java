@@ -101,18 +101,32 @@ public class NasaSteps {
         nasaPage.clickContactNasa();
         nasaContactPage.clickContactNasa();
     }
+
     @And("I fill in some fields with the following test data {string} {string} {string} {string}")
     public void and_IFillInSomeFieldsWithTheFollowingTestData(String fname, String lname, String email, String comment) {
         nasaSubmitQuestionPage.fillOutFormData(fname, lname, email, comment);
     }
+
     @And("I click Submit")
     public void and_IClickSubmit() throws InterruptedException {
         nasaSubmitQuestionPage.clickSubmit();
     }
+
     @Then("The form is submitted successfully")
     public void then_theFormIsSubmittedSuccessfully() {
         String expected_message = "Thanks for contacting us! We will get in touch with you shortly.";
         String actual_message = nasaSubmitQuestionPage.confirmationMessage();
         Assert.assertEquals(expected_message,actual_message);
     }
+
+    @And("Click each of the Multimedia submenu links")
+    public void click_each_of_the_submenu_links() throws InterruptedException {
+        nasaPage.clickEachMultimediaLink();
+    }
+
+    @Then("Each page will load without errors")
+    public void each_page_will_load_without_errors() {
+        Assert.assertFalse(nasaPage.validateAnyErrorPageLoad());
+    }
+
 }
