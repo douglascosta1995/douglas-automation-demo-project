@@ -2,14 +2,13 @@ package com.springselenium.automation.pages.nasa;
 
 import com.springselenium.automation.annotation.LazyComponent;
 import com.springselenium.automation.pages.AbstractPage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 @LazyComponent
 public class NasaPage extends AbstractPage {
@@ -34,7 +33,17 @@ public class NasaPage extends AbstractPage {
 
     private final By multimedia_links = By.xpath("//ul[@id='news-galleries-submenu']//li/a");
 
+    private final By nasa_facebook = By.xpath("//*[@title='NASA on Facebook']");
+
+    private final By nasa_instagram = By.xpath("//*[@title='NASA on Instagram']");
+
+    private final By nasa_x = By.xpath("//*[@title='NASA on X']");
+
+    private final By nasa_youtube = By.xpath("//*[@title='NASA on YouTube']");
+
+
     public static boolean errorLoadingPage = false;
+    public static boolean errorSocialMediaLinks = false;
 
 
     @Override
@@ -110,6 +119,120 @@ public class NasaPage extends AbstractPage {
 
     public boolean validateAnyErrorPageLoad(){
         return errorLoadingPage;
+    }
+
+    public void clickSocialMediaLinks() throws InterruptedException {
+        boolean successFacebookLink = clickFacebookValidateLink(nasa_facebook);
+        boolean successInstagramLink = clickInstagramValidateLink(nasa_instagram);
+        boolean successXLink = clickXValidateLink(nasa_x);
+        boolean successYoutubeLink = clickYoutubeValidateLink(nasa_youtube);
+
+        if(!successFacebookLink || !successInstagramLink || !successXLink || !successYoutubeLink){
+            errorSocialMediaLinks = true;
+        }
+    }
+
+    public boolean validateAnyErrorSocialMediaLinks(){
+        return errorSocialMediaLinks;
+    }
+
+    public boolean clickFacebookValidateLink(By facebook_link) throws InterruptedException {
+        WebElement button = driver.findElement(facebook_link);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+        String originalWindow = driver.getWindowHandle();
+        Thread.sleep(5000);
+        button.click();
+        Thread.sleep(5000);
+
+        Set<String> windowHandles = driver.getWindowHandles();
+        Iterator<String> iterator = windowHandles.iterator();
+        String first = iterator.next(); // First handle is usually the original window
+        String second = iterator.next(); // Second handle is the newly opened tab
+        String new_tab = iterator.next();
+        // Switch to the new tab
+        driver.switchTo().window(new_tab);
+
+        String newTabTitle = driver.getTitle();
+        System.out.println("Title of the new tab: " + newTabTitle);
+        driver.close();
+        driver.switchTo().window(originalWindow);
+
+        assert newTabTitle != null;
+        return newTabTitle.contains("Facebook");
+    }
+
+    public boolean clickInstagramValidateLink(By instagram_link) throws InterruptedException {
+        WebElement button = driver.findElement(instagram_link);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+        String originalWindow = driver.getWindowHandle();
+        Thread.sleep(5000);
+        button.click();
+        Thread.sleep(5000);
+
+        Set<String> windowHandles = driver.getWindowHandles();
+        Iterator<String> iterator = windowHandles.iterator();
+        String first = iterator.next(); // First handle is usually the original window
+        String second = iterator.next(); // Second handle is the newly opened tab
+        String new_tab = iterator.next();
+        // Switch to the new tab
+        driver.switchTo().window(new_tab);
+
+        String newTabTitle = driver.getTitle();
+        System.out.println("Title of the new tab: " + newTabTitle);
+        driver.close();
+        driver.switchTo().window(originalWindow);
+
+        assert newTabTitle != null;
+        return newTabTitle.contains("Instagram");
+    }
+
+    public boolean clickXValidateLink(By x_link) throws InterruptedException {
+        WebElement button = driver.findElement(x_link);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+        String originalWindow = driver.getWindowHandle();
+        Thread.sleep(5000);
+        button.click();
+        Thread.sleep(5000);
+
+        Set<String> windowHandles = driver.getWindowHandles();
+        Iterator<String> iterator = windowHandles.iterator();
+        String first = iterator.next(); // First handle is usually the original window
+        String second = iterator.next(); // Second handle is the newly opened tab
+        String new_tab = iterator.next();
+        // Switch to the new tab
+        driver.switchTo().window(new_tab);
+
+        String newTabTitle = driver.getTitle();
+        System.out.println("Title of the new tab: " + newTabTitle);
+        driver.close();
+        driver.switchTo().window(originalWindow);
+
+        assert newTabTitle != null;
+        return newTabTitle.contains("(@NASA) / X");
+    }
+
+    public boolean clickYoutubeValidateLink(By youtube_link) throws InterruptedException {
+        WebElement button = driver.findElement(youtube_link);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+        String originalWindow = driver.getWindowHandle();
+        Thread.sleep(5000);
+        button.click();
+        Thread.sleep(5000);
+        Set<String> windowHandles = driver.getWindowHandles();
+        Iterator<String> iterator = windowHandles.iterator();
+        String first = iterator.next(); // First handle is usually the original window
+        String second = iterator.next(); // Second handle is the newly opened tab
+        String new_tab = iterator.next();
+        // Switch to the new tab
+        driver.switchTo().window(new_tab);
+
+        String newTabTitle = driver.getTitle();
+        System.out.println("Title of the new tab: " + newTabTitle);
+        driver.close();
+        driver.switchTo().window(originalWindow);
+
+        assert newTabTitle != null;
+        return newTabTitle.contains("YouTube");
     }
 
 }

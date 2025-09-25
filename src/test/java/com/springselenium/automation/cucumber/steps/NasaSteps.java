@@ -120,13 +120,23 @@ public class NasaSteps {
     }
 
     @And("Click each of the Multimedia submenu links")
-    public void click_each_of_the_submenu_links() throws InterruptedException {
+    public void and_clickEachOfTheSubmenuLinks() throws InterruptedException {
         nasaPage.clickEachMultimediaLink();
     }
 
     @Then("Each page will load without errors")
-    public void each_page_will_load_without_errors() {
+    public void then_eachPageWillLoadWithoutErrors() {
         Assert.assertFalse(nasaPage.validateAnyErrorPageLoad());
+    }
+
+    @When("I click on the social media links")
+    public void when_iClickOnTheSocialMediaLinks() throws InterruptedException {
+        nasaPage.clickSocialMediaLinks();
+    }
+
+    @Then("They open correctly")
+    public void then_theyOpenCorrectly() {
+        Assert.assertFalse(nasaPage.validateAnyErrorSocialMediaLinks());
     }
 
 }
