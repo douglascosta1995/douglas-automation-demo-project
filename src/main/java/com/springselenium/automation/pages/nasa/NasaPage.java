@@ -47,6 +47,9 @@ public class NasaPage extends AbstractPage {
 
     private final By button_download = By.xpath("//*[contains(@class, 'hds-button-download')]");
 
+    private final By button_recently_published = By.xpath("//a[contains(@class, 'button-primary')]/span[contains(text(), 'Recently Published')]");
+
+    private final By news_header = By.className("hds-a11y-heading-22");
 
     public static boolean errorLoadingPage = false;
     public static boolean errorSocialMediaLinks = false;
@@ -260,6 +263,18 @@ public class NasaPage extends AbstractPage {
 
     public boolean validateAnyErrorImageDownload(){
         return errorDownloadImage;
+    }
+
+    public void clickRecentlyPublished() throws InterruptedException {
+        WebElement button = driver.findElement(button_recently_published);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+        Thread.sleep(5000);
+        button.click();
+    }
+
+    public int listOfPublishedNews(){
+        List<WebElement> news_header_list = driver.findElements(news_header);
+        return news_header_list.size();
     }
 
 

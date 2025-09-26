@@ -152,4 +152,15 @@ public class NasaSteps {
         Assert.assertFalse(nasaPage.validateAnyErrorImageDownload());
     }
 
+    @When("I click Recently Published button")
+    public void when_IClickRecentlyPublishedButton() throws InterruptedException {
+        nasaPage.clickRecentlyPublished();
+    }
+
+    @Then("I am taken to a list of published news")
+    public void then_IAmTakenToAListOfPublishedNews() {
+        int news_displayed_first_page = nasaPage.listOfPublishedNews();
+        Assert.assertTrue(news_displayed_first_page>0);
+    }
+
 }
