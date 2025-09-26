@@ -3,12 +3,14 @@ package com.springselenium.automation.pages.nasa;
 import com.springselenium.automation.annotation.LazyComponent;
 import com.springselenium.automation.pages.AbstractPage;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.File;
 import java.time.Duration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @LazyComponent
 public class NasaPage extends AbstractPage {
@@ -41,9 +43,14 @@ public class NasaPage extends AbstractPage {
 
     private final By nasa_youtube = By.xpath("//*[@title='NASA on YouTube']");
 
+    private final By button_view_image = By.xpath("//div[contains(@class, 'under-image-button')]//a");
+
+    private final By button_download = By.xpath("//*[contains(@class, 'hds-button-download')]");
+
 
     public static boolean errorLoadingPage = false;
     public static boolean errorSocialMediaLinks = false;
+    public static boolean errorDownloadImage= false;
 
 
     @Override
@@ -233,6 +240,69 @@ public class NasaPage extends AbstractPage {
 
         assert newTabTitle != null;
         return newTabTitle.contains("YouTube");
+    }
+
+    public void clickImageOfTheDay() throws InterruptedException {
+        WebElement button = driver.findElement(button_view_image);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+        Thread.sleep(5000);
+        button.click();
+    }
+
+    public void downloadImage() throws InterruptedException {
+        String downloadPath = "/Users/douglascosta/Documents/Automation/douglas-automation-demo-project/src/main/downloads";
+        File downloadFiles = new File(downloadPath);
+        clearDownloadFolder(downloadFiles);
+        Thread.sleep(2000);
+        driver.findElement(button_download).click();
+        waitUntilFolderIsNotEmpty(downloadPath, Duration.ofSeconds(30));
+    }
+
+    public boolean validateAnyErrorImageDownload(){
+        return errorDownloadImage;
+    }
+
+
+    /// Helper Functions ///
+
+    public void clearDownloadFolder(File downloadFolder){
+        if (downloadFolder.exists() && downloadFolder.isDirectory()) {
+            File[] files = downloadFolder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        // Recursively delete contents of subdirectories
+                        clearDownloadFolder(file);
+                    }
+                    file.delete(); // Delete the file or empty directory
+                }
+            }
+        }
+    }
+
+    public static void waitUntilFolderIsNotEmpty(String folderPath, Duration timeout) {
+        File folder = new File(folderPath);
+        long startTime = System.currentTimeMillis();
+
+        while (System.currentTimeMillis() - startTime < timeout.toMillis()) {
+            if (folder.exists() && folder.isDirectory()) {
+                File[] files = folder.listFiles();
+                if (files != null && files.length > 0) {
+                    System.out.println("Folder is not empty. Found " + files.length + " files.");
+                    return; // Folder is not empty, exit the loop
+                }
+            }
+            try {
+                Thread.sleep(500); // Wait for a short interval before re-checking
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Thread interrupted while waiting for folder to be non-empty.");
+                errorDownloadImage = true;
+                return;
+            }
+        }
+        errorDownloadImage = true;
+        System.out.println("Timeout reached. Folder is still empty or does not exist.");
     }
 
 }

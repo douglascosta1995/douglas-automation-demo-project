@@ -32,7 +32,8 @@ public class WebDriverConfig {
 		chromeOptions.addArguments("start-maximized");
 		chromePrefs.put("autofill.profile_enabled", false);
 		chromePrefs.put("profile.password_manager_leak_detection", false);
-		chromeOptions.setExperimentalOption("prefs", chromePrefs);
+        chromePrefs.put("download.default_directory", "/Users/douglascosta/Documents/Automation/douglas-automation-demo-project/src/main/downloads");
+        chromeOptions.setExperimentalOption("prefs", chromePrefs);
 
 		WebDriverManager.chromedriver().clearDriverCache().setup();
 		return new ChromeDriver(chromeOptions);

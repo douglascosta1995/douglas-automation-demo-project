@@ -139,4 +139,17 @@ public class NasaSteps {
         Assert.assertFalse(nasaPage.validateAnyErrorSocialMediaLinks());
     }
 
+    @When("I click View image of the day")
+    public void when_IClickViewImageOfTheDay() throws InterruptedException {
+        nasaPage.clickImageOfTheDay();
+    }
+    @And("I click Download")
+    public void and_IClickDownload() throws InterruptedException {
+        nasaPage.downloadImage();
+    }
+    @Then("The image is downloaded successfully")
+    public void then_TheImageIsDownloadedSuccessfully() {
+        Assert.assertFalse(nasaPage.validateAnyErrorImageDownload());
+    }
+
 }

@@ -38,6 +38,11 @@ Feature: As a user, I want to explore the Nasa Page and have all of its function
     Then They open correctly
 
 
+  Scenario: Validate that it is possible to View and Download Image Of The Day
+    Given I am on the Nasa homepage
+    When I click View image of the day
+    And I click Download
+    Then The image is downloaded successfully
 
 
 
