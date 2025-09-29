@@ -32,11 +32,8 @@ public class NasaResultsPage extends AbstractPage {
         driver.findElement(contentTypeCheckBox).click();
     }
 
-    public void clickApplyFilter() throws InterruptedException {
-        WebElement button = driver.findElement(applyFiltersBtn);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
-        Thread.sleep(5000);
-        button.click();
+    public void clickApplyFilter() {
+        scroll_into_view_and_click(applyFiltersBtn);
     }
 
     public String getResultsTitle(){
@@ -45,5 +42,23 @@ public class NasaResultsPage extends AbstractPage {
 
     public String getContentType(){
         return driver.findElement(contentType).getText();
+    }
+
+    /// Helper Functions ///
+
+    public void scroll_into_view_and_click(By button_to_be_clicked){
+        WebElement button = driver.findElement(button_to_be_clicked);
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", button);
+
+        wait.until(driver -> (Boolean) ((JavascriptExecutor) driver)
+                .executeScript(
+                        "var elem = arguments[0], box = elem.getBoundingClientRect();" +
+                                "return (box.top >= 0 && box.bottom <= window.innerHeight);", button));
+
+        wait.until(ExpectedConditions.elementToBeClickable(button));
+        wait.until(ExpectedConditions.visibilityOf(button));
+
+        button.click();
     }
 }

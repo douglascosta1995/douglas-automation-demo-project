@@ -65,7 +65,6 @@ public class NasaSteps {
 
     @Then("The technology page loads with the correct header")
     public void then_TheTechnologyPageLoadsWithTheCorrectHeader() throws InterruptedException {
-        Thread.sleep(2000);
         String expected_pageTile = "Technology - NASA";
         String actual_pageTitle = nasaTechnologyPage.getPageTitle();
         Assert.assertEquals(expected_pageTile,actual_pageTitle);

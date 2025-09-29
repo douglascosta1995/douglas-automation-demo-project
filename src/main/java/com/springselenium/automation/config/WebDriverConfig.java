@@ -30,6 +30,8 @@ public class WebDriverConfig {
 		chromeOptions.setExperimentalOption("prefs", chromePrefs);
 		chromeOptions.addArguments("--remote-allow-origins=*");
 		chromeOptions.addArguments("start-maximized");
+        chromeOptions.addArguments("--disable-extensions");
+        chromeOptions.addArguments("--disable-popup-blocking");
 		chromePrefs.put("autofill.profile_enabled", false);
 		chromePrefs.put("profile.password_manager_leak_detection", false);
         chromePrefs.put("download.default_directory", "/Users/douglascosta/Documents/Automation/douglas-automation-demo-project/src/main/downloads");

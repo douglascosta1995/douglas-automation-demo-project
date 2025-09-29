@@ -5,17 +5,20 @@ import com.springselenium.automation.pages.AbstractPage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @LazyComponent
 public class NasaPage extends AbstractPage {
-    //@Value("${application.url}")
-    private String url = "https://www.nasa.gov/";
+    @Value("${application.url}")
+    private String url;
 
     private final By nasa_header = By.id("header-logo");
 
@@ -83,6 +86,8 @@ public class NasaPage extends AbstractPage {
         driver.findElement(button_link_technology).click();
         wait.until(ExpectedConditions.elementToBeClickable(button_link_technology_submenu));
         driver.findElement(button_link_technology_submenu).click();
+        wait.until((ExpectedCondition<Boolean>) wd ->
+                wd.getTitle() != null && !wd.getTitle().trim().isEmpty());
     }
 
     public void clickMultimedia(){
@@ -93,14 +98,11 @@ public class NasaPage extends AbstractPage {
         driver.findElement(button_image_of_day_submenu).click();
     }
 
-    public void clickContactNasa() throws InterruptedException {
-        WebElement button = driver.findElement(button_contact_nasa);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
-        Thread.sleep(5000);
-        button.click();
+    public void clickContactNasa() {
+        scroll_into_view_and_click(button_contact_nasa);
     }
 
-    public void clickEachMultimediaLink() throws InterruptedException {
+    public void clickEachMultimediaLink() {
         clickMultimedia();
         List<WebElement> list_links = driver.findElements(multimedia_links);
 
@@ -146,117 +148,176 @@ public class NasaPage extends AbstractPage {
         return errorSocialMediaLinks;
     }
 
-    public boolean clickFacebookValidateLink(By facebook_link) throws InterruptedException {
-        WebElement button = driver.findElement(facebook_link);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+    public boolean clickFacebookValidateLink(By facebook_link) {
+        wait_page_to_load();
         String originalWindow = driver.getWindowHandle();
-        Thread.sleep(5000);
-        button.click();
-        Thread.sleep(5000);
+        scroll_to_bottom();
+        scroll_into_view_and_click(facebook_link);
 
-        Set<String> windowHandles = driver.getWindowHandles();
-        Iterator<String> iterator = windowHandles.iterator();
-        String first = iterator.next(); // First handle is usually the original window
-        String second = iterator.next(); // Second handle is the newly opened tab
-        String new_tab = iterator.next();
-        // Switch to the new tab
-        driver.switchTo().window(new_tab);
+        List<String> windowHandles = new ArrayList<>(driver.getWindowHandles());
+
+        // Switch to the new tab (assuming it's the second one)
+        for (String handle : windowHandles) {
+            if (!handle.equals(originalWindow)) {
+                driver.switchTo().window(handle);
+                while (true) {
+                    String title = driver.getTitle();
+                    if (title != null && title.contains("Slido for Google Slides")) {
+                        System.out.println("Detected Slido overlay title, refreshing...");
+                        driver.navigate().refresh();
+
+                        // Small wait to let the refresh complete
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    } else {
+                        break; // Exit loop once valid title is found
+                    }
+                }
+            }
+        }
 
         String newTabTitle = driver.getTitle();
         System.out.println("Title of the new tab: " + newTabTitle);
-        driver.close();
+        close_tab();
         driver.switchTo().window(originalWindow);
 
         assert newTabTitle != null;
         return newTabTitle.contains("Facebook");
     }
 
-    public boolean clickInstagramValidateLink(By instagram_link) throws InterruptedException {
-        WebElement button = driver.findElement(instagram_link);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+    public boolean clickInstagramValidateLink(By instagram_link) {
+        wait_page_to_load();
         String originalWindow = driver.getWindowHandle();
-        Thread.sleep(5000);
-        button.click();
-        Thread.sleep(5000);
+        scroll_to_bottom();
+        scroll_into_view_and_click(instagram_link);
 
-        Set<String> windowHandles = driver.getWindowHandles();
-        Iterator<String> iterator = windowHandles.iterator();
-        String first = iterator.next(); // First handle is usually the original window
-        String second = iterator.next(); // Second handle is the newly opened tab
-        String new_tab = iterator.next();
-        // Switch to the new tab
-        driver.switchTo().window(new_tab);
+        List<String> windowHandles = new ArrayList<>(driver.getWindowHandles());
+
+        // Switch to the new tab (assuming it's the second one)
+        for (String handle : windowHandles) {
+            if (!handle.equals(originalWindow)) {
+                driver.switchTo().window(handle);
+                while (true) {
+                    String title = driver.getTitle();
+                    if (title != null && title.contains("Slido for Google Slides")) {
+                        System.out.println("Detected Slido overlay title, refreshing...");
+                        driver.navigate().refresh();
+
+                        // Small wait to let the refresh complete
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    } else {
+                        break; // Exit loop once valid title is found
+                    }
+                }
+            }
+        }
 
         String newTabTitle = driver.getTitle();
         System.out.println("Title of the new tab: " + newTabTitle);
-        driver.close();
+        close_tab();
         driver.switchTo().window(originalWindow);
 
         assert newTabTitle != null;
         return newTabTitle.contains("Instagram");
     }
 
-    public boolean clickXValidateLink(By x_link) throws InterruptedException {
-        WebElement button = driver.findElement(x_link);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+    public boolean clickXValidateLink(By x_link) {
+        wait_page_to_load();
         String originalWindow = driver.getWindowHandle();
-        Thread.sleep(5000);
-        button.click();
-        Thread.sleep(5000);
+        scroll_to_bottom();
+        scroll_into_view_and_click(x_link);
 
-        Set<String> windowHandles = driver.getWindowHandles();
-        Iterator<String> iterator = windowHandles.iterator();
-        String first = iterator.next(); // First handle is usually the original window
-        String second = iterator.next(); // Second handle is the newly opened tab
-        String new_tab = iterator.next();
-        // Switch to the new tab
-        driver.switchTo().window(new_tab);
+        List<String> windowHandles = new ArrayList<>(driver.getWindowHandles());
+
+        // Switch to the new tab (assuming it's the second one)
+        for (String handle : windowHandles) {
+            if (!handle.equals(originalWindow)) {
+                driver.switchTo().window(handle);
+                while (true) {
+                    String title = driver.getTitle();
+                    if (title != null && title.contains("Slido for Google Slides")) {
+                        System.out.println("Detected Slido overlay title, refreshing...");
+                        driver.navigate().refresh();
+
+                        // Small wait to let the refresh complete
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    } else {
+                        break; // Exit loop once valid title is found
+                    }
+                }
+            }
+        }
 
         String newTabTitle = driver.getTitle();
+
         System.out.println("Title of the new tab: " + newTabTitle);
-        driver.close();
+        close_tab();
         driver.switchTo().window(originalWindow);
 
         assert newTabTitle != null;
-        return newTabTitle.contains("(@NASA) / X");
+        return newTabTitle.contains("/ X");
     }
 
-    public boolean clickYoutubeValidateLink(By youtube_link) throws InterruptedException {
-        WebElement button = driver.findElement(youtube_link);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+    public boolean clickYoutubeValidateLink(By youtube_link) {
+        wait_page_to_load();
         String originalWindow = driver.getWindowHandle();
-        Thread.sleep(5000);
-        button.click();
-        Thread.sleep(5000);
-        Set<String> windowHandles = driver.getWindowHandles();
-        Iterator<String> iterator = windowHandles.iterator();
-        String first = iterator.next(); // First handle is usually the original window
-        String second = iterator.next(); // Second handle is the newly opened tab
-        String new_tab = iterator.next();
-        // Switch to the new tab
-        driver.switchTo().window(new_tab);
+        scroll_to_bottom();
+        scroll_into_view_and_click(youtube_link);
+
+        List<String> windowHandles = new ArrayList<>(driver.getWindowHandles());
+
+        // Switch to the new tab (assuming it's the second one)
+        for (String handle : windowHandles) {
+            if (!handle.equals(originalWindow)) {
+                driver.switchTo().window(handle);
+                while (true) {
+                    String title = driver.getTitle();
+                    if (title != null && title.contains("Slido for Google Slides")) {
+                        System.out.println("Detected Slido overlay title, refreshing...");
+                        driver.navigate().refresh();
+
+                        // Small wait to let the refresh complete
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    } else {
+                        break; // Exit loop once valid title is found
+                    }
+                }
+            }
+        }
 
         String newTabTitle = driver.getTitle();
         System.out.println("Title of the new tab: " + newTabTitle);
-        driver.close();
+        close_tab();
         driver.switchTo().window(originalWindow);
 
         assert newTabTitle != null;
         return newTabTitle.contains("YouTube");
     }
 
-    public void clickImageOfTheDay() throws InterruptedException {
-        WebElement button = driver.findElement(button_view_image);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
-        Thread.sleep(5000);
-        button.click();
+    public void clickImageOfTheDay() {
+        wait_page_to_load();
+        scroll_into_view_and_click(button_view_image);
     }
 
-    public void downloadImage() throws InterruptedException {
+    public void downloadImage() {
         String downloadPath = "/Users/douglascosta/Documents/Automation/douglas-automation-demo-project/src/main/downloads";
         File downloadFiles = new File(downloadPath);
         clearDownloadFolder(downloadFiles);
-        Thread.sleep(2000);
         driver.findElement(button_download).click();
         waitUntilFolderIsNotEmpty(downloadPath, Duration.ofSeconds(30));
     }
@@ -265,11 +326,8 @@ public class NasaPage extends AbstractPage {
         return errorDownloadImage;
     }
 
-    public void clickRecentlyPublished() throws InterruptedException {
-        WebElement button = driver.findElement(button_recently_published);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
-        Thread.sleep(5000);
-        button.click();
+    public void clickRecentlyPublished() {
+        scroll_into_view_and_click(button_recently_published);
     }
 
     public int listOfPublishedNews(){
@@ -279,6 +337,55 @@ public class NasaPage extends AbstractPage {
 
 
     /// Helper Functions ///
+
+    public void scroll_into_view_and_click(By button_to_be_clicked){
+        WebElement button = driver.findElement(button_to_be_clicked);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+
+        wait.until(driver -> (Boolean) ((JavascriptExecutor) driver)
+                .executeScript(
+                        "var elem = arguments[0], box = elem.getBoundingClientRect();" +
+                                "return (box.top >= 0 && box.bottom <= window.innerHeight);", button));
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", button);
+
+        wait.until(driver -> (Boolean) ((JavascriptExecutor) driver)
+                .executeScript(
+                        "var elem = arguments[0], box = elem.getBoundingClientRect();" +
+                                "return (box.top >= 0 && box.bottom <= window.innerHeight);", button));
+
+        wait.until(ExpectedConditions.elementToBeClickable(button));
+        wait.until(ExpectedConditions.visibilityOf(button));
+
+        button.click();
+    }
+
+    public void scroll_to_bottom(){
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    }
+
+    public void wait_page_to_load(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+    }
+
+    public void close_tab(){
+        wait.until(d -> {
+            String title = d.getTitle();
+            return title != null && !title.isEmpty() && !title.contains("Slido for Google Slides");
+        });
+        try {
+            driver.close();
+        } catch (RuntimeException e) {
+            System.err.println("Standard driver.close() failed: " + e.getMessage());
+            try {
+                ((JavascriptExecutor) driver).executeScript("window.close()");
+                System.out.println("Closed tab using JavaScript fallback.");
+            } catch (Exception jsEx) {
+                System.err.println("JavaScript close also failed: " + jsEx.getMessage());
+            }
+        }
+    }
 
     public void clearDownloadFolder(File downloadFolder){
         if (downloadFolder.exists() && downloadFolder.isDirectory()) {

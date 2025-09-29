@@ -5,6 +5,8 @@ import com.springselenium.automation.pages.AbstractPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import java.util.List;
 import java.util.Random;
 
@@ -22,7 +24,7 @@ public class NasaImagePage extends AbstractPage {
         return wait.until((d) -> driver.findElement(nasa_header).isDisplayed());
     }
 
-    public void click_image() throws InterruptedException {
+    public void click_image() {
         List<WebElement> list_images = driver.findElements(images);
 
         Random random = new Random();
@@ -34,14 +36,29 @@ public class NasaImagePage extends AbstractPage {
 
         By selected_images = By.xpath(new_xpath);
 
-        WebElement image_to_click = driver.findElement(selected_images);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", image_to_click);
-        Thread.sleep(3000);
-        image_to_click.click();
+        scroll_into_view_and_click(selected_images);
     }
 
     public String getImageAltText(){
         return driver.findElement(open_image).getAttribute("alt");
+    }
+
+    /// Helper Functions ///
+
+    public void scroll_into_view_and_click(By button_to_be_clicked){
+        WebElement button = driver.findElement(button_to_be_clicked);
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", button);
+
+        wait.until(driver -> (Boolean) ((JavascriptExecutor) driver)
+                .executeScript(
+                        "var elem = arguments[0], box = elem.getBoundingClientRect();" +
+                                "return (box.top >= 0 && box.bottom <= window.innerHeight);", button));
+
+        wait.until(ExpectedConditions.visibilityOf(button));
+        wait.until(ExpectedConditions.elementToBeClickable(button));
+
+        button.click();
     }
 }
 
