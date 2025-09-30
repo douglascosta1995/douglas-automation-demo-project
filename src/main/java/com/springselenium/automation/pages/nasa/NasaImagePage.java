@@ -24,7 +24,7 @@ public class NasaImagePage extends AbstractPage {
         return wait.until((d) -> driver.findElement(nasa_header).isDisplayed());
     }
 
-    public void click_image() {
+    public void click_image() throws InterruptedException {
         List<WebElement> list_images = driver.findElements(images);
 
         Random random = new Random();

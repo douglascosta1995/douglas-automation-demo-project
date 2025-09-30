@@ -165,13 +165,7 @@ public class NasaPage extends AbstractPage {
                     if (title != null && title.contains("Slido for Google Slides")) {
                         System.out.println("Detected Slido overlay title, refreshing...");
                         driver.navigate().refresh();
-
-                        // Small wait to let the refresh complete
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
+                        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
                     } else {
                         break; // Exit loop once valid title is found
                     }
@@ -206,12 +200,7 @@ public class NasaPage extends AbstractPage {
                         System.out.println("Detected Slido overlay title, refreshing...");
                         driver.navigate().refresh();
 
-                        // Small wait to let the refresh complete
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
+                        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
                     } else {
                         break; // Exit loop once valid title is found
                     }
@@ -246,12 +235,7 @@ public class NasaPage extends AbstractPage {
                         System.out.println("Detected Slido overlay title, refreshing...");
                         driver.navigate().refresh();
 
-                        // Small wait to let the refresh complete
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
+                        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
                     } else {
                         break; // Exit loop once valid title is found
                     }
@@ -286,13 +270,7 @@ public class NasaPage extends AbstractPage {
                     if (title != null && title.contains("Slido for Google Slides")) {
                         System.out.println("Detected Slido overlay title, refreshing...");
                         driver.navigate().refresh();
-
-                        // Small wait to let the refresh complete
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
+                        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
                     } else {
                         break; // Exit loop once valid title is found
                     }
